@@ -60,7 +60,8 @@ const App = () => {
   }, []);
 
   return (
-    <div>
+    <>
+      <h1>Meet the Team</h1>
       {status === Status.Success ? (
         <Members members={members} />
       ) : (
@@ -68,7 +69,7 @@ const App = () => {
           <li>idle/fetching/error</li>
         </ul>
       )}
-    </div>
+    </>
   );
 };
 

@@ -1,3 +1,17 @@
+:root {
+  --spacing-smaller: 0.5rem; /* 8px */
+  --spacing-small: 0.625rem; /* 10px */
+  --spacing-default: 1rem; /* 16px */
+  --spacing-large: 2.75rem; /* 44px */
+  --spacing-larger: 4.5rem; /* 72px */
+}
+
 body {
   background-color: #ebe9e4;
+  font-family: "Work Sans";
+}
+
+h1 {
+  font-size: 1.5rem;
+  line-height: 1.15;
 }
