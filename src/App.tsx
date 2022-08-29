@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import Members from "./components/Members";
 
-type Member = {
+export type Member = {
   id: string;
   firstName: string;
   lastName: string;
@@ -60,17 +61,13 @@ const App = () => {
 
   return (
     <div>
-      {
+      {status === Status.Success ? (
+        <Members members={members} />
+      ) : (
         <ul>
-          {status === Status.Success ? (
-            members.map(({ id, firstName, lastName }) => (
-              <li key={id}>{`${firstName} ${lastName}`}</li>
-            ))
-          ) : (
-            <li>idle/fetching/error</li>
-          )}
+          <li>idle/fetching/error</li>
         </ul>
-      }
+      )}
     </div>
   );
 };
