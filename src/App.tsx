@@ -30,14 +30,15 @@ enum Status {
   Error,
 }
 
-const App = () => {
-  const [members, setMembers] = useState<Member[]>([]);
+const App = ({ url }: { url: string }) => {
   const [status, setStatus] = useState<Status>(Status.Idle);
+  const [members, setMembers] = useState<Member[]>([]);
+  const [isGrid, setIsGrid] = useState<boolean>(false);
 
   useEffect(() => {
     setStatus(Status.Fetching);
 
-    fetch("https://randomuser.me/api/?results=50")
+    fetch(url)
       .then((response) => response.json())
       .then(({ results }: { results: ApiMember[] }) => {
         setMembers(
@@ -60,16 +61,19 @@ const App = () => {
   }, []);
 
   return (
-    <>
+    <main>
       <h1>Meet the Team</h1>
+      <nav>
+        <button className="grid-toggle" onClick={() => setIsGrid(!isGrid)} />
+      </nav>
       {status === Status.Success ? (
-        <Members members={members} />
+        <Members members={members} isGrid={isGrid} />
       ) : (
         <ul>
           <li>idle/fetching/error</li>
         </ul>
       )}
-    </>
+    </main>
   );
 };
 
