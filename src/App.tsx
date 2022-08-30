@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Members from "./components/Members";
+import LoadingSpinner from "./components/LoadingSpinner";
 
 export type Member = {
   id: string;
@@ -33,6 +34,7 @@ enum Status {
 const App = ({ url }: { url: string }) => {
   const [status, setStatus] = useState<Status>(Status.Idle);
   const [members, setMembers] = useState<Member[]>([]);
+  const [maxMembers, setMaxMembers] = useState<number>(10);
   const [isGrid, setIsGrid] = useState<boolean>(false);
   const [sortDescending, setSortDescending] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -66,6 +68,21 @@ const App = ({ url }: { url: string }) => {
       });
   }, []);
 
+  const observer = useRef<IntersectionObserver | null>(null);
+  const loadingRef = useCallback((node: HTMLDivElement): HTMLDivElement => {
+    if (observer) {
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          setMaxMembers((prevAmount) => prevAmount + 10);
+        }
+      });
+      if (node) {
+        observer.current.observe(node);
+      }
+    }
+    return node;
+  }, []);
+
   return (
     <main>
       <h1>Meet the Team</h1>
@@ -96,14 +113,18 @@ const App = ({ url }: { url: string }) => {
               sortDescending
                 ? b.lastName.localeCompare(a.lastName)
                 : a.lastName.localeCompare(b.lastName)
-            )}
+            )
+            .slice(0, maxMembers)}
           isGrid={isGrid}
         />
       ) : (
         <ul>
-          <li>idle/fetching/error</li>
+          <li>
+            <LoadingSpinner />
+          </li>
         </ul>
       )}
+      <div ref={loadingRef} />
     </main>
   );
 };
