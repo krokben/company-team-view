@@ -3,8 +3,9 @@
   grid-template-rows: 1fr 2.5fr;
   grid-template-columns: min-content auto;
   gap: 0 var(--spacing-small);
+  position: relative;
   padding: var(--spacing-default);
-  background-color: #fff;
+  /*background-color: #fff;*/
   border-radius: 20px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -12,6 +13,44 @@
 .member:focus-visible {
   outline-color: #000;
   outline-style: dotted;
+}
+
+.member::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  z-index: -1;
+}
+
+.member:nth-child(1n + 0)::before {
+  background-color: #a7b8a8;
+}
+
+.member:nth-child(2n + 0)::before {
+  background-color: #e3d5c9;
+}
+
+.member:nth-child(3n + 0)::before {
+  background-color: #e7cdab;
+}
+
+.member::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 58px;
+  background-color: #fff;
+  border-radius: 42px 20px 20px 0;
+  z-index: -1;
+}
+
+.members--grid .member::after {
+  top: 50%;
+  left: 0;
+  border-radius: 42px 0 20px 20px;
 }
 
 .members--grid .member {
@@ -29,6 +68,7 @@
   height: 82px;
   border-radius: 50%;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 4;
 }
 
 .members--grid .member__picture {
@@ -50,6 +90,17 @@
   font-size: 0.875rem;
 }
 
+.members--grid .member__name::after {
+  content: "";
+  position: absolute;
+  top: calc(50% - 42px);
+  right: 0;
+  width: 42px;
+  height: 42px;
+  background-color: #fff;
+  z-index: 2;
+}
+
 .member__profile {
   grid-column: 2 / -1;
   display: flex;
@@ -60,6 +111,30 @@
 
 .members--grid .member__profile {
   grid-column: 1 / -1;
+}
+
+.members--grid .member__profile::after {
+  content: "";
+  position: absolute;
+  top: calc(50% - 42px);
+  right: 0;
+  width: 42px;
+  height: 42px;
+  background-color: deepskyblue;
+  border-radius: 0 0 42px 0;
+  z-index: 3;
+}
+
+.members--grid .member:nth-child(1n + 0) .member__profile::after {
+  background-color: #a7b8a8;
+}
+
+.members--grid .member:nth-child(2n + 0) .member__profile::after {
+  background-color: #e3d5c9;
+}
+
+.members--grid .member:nth-child(3n + 0) .member__profile::after {
+  background-color: #e7cdab;
 }
 
 .member__city {

@@ -34,15 +34,26 @@ main {
 }
 
 nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  display: grid;
+  grid-template-rows: min-content min-content;
+  grid-template-columns: auto auto;
+  align-items: center;
+  gap: var(--spacing-default);
   width: 100%;
   margin-bottom: var(--spacing-default);
   padding-right: var(--spacing-small);
 }
 
+@media (min-width: 640px) {
+  nav {
+    grid-template-rows: 1fr;
+    grid-template-columns: min-content min-content auto;
+  }
+}
+
 .grid-toggle {
+  grid-row: 2 / -1;
+  justify-self: flex-end;
   display: block;
   width: 24px;
   height: 23px;
@@ -53,7 +64,15 @@ nav {
   cursor: pointer;
 }
 
+@media (min-width: 640px) {
+  .grid-toggle {
+    grid-row: 1 / -1;
+    grid-column: 3 / -1;
+  }
+}
+
 .sort-toggle {
+  grid-row: 2 / -1;
   display: block;
   width: 32px;
   height: 23px;
@@ -64,6 +83,12 @@ nav {
   cursor: pointer;
 }
 
+@media (min-width: 640px) {
+  .sort-toggle {
+    grid-row: 1 / -1;
+  }
+}
+
 .grid-toggle:focus-visible,
 .sort-toggle:focus-visible {
   outline-color: #000;
@@ -71,16 +96,34 @@ nav {
 }
 
 .search {
+  grid-column: 1 / -1;
   position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .search {
+    grid-column: 2 / 3;
+  }
 }
 
 .search__input {
+  width: 100%;
+  margin-bottom: var(--spacing-default);
   padding: var(--spacing-smaller);
   padding-left: 1.75rem;
   border: 0;
   border-bottom: 2px solid #000;
   background: none;
   font-size: 1.125rem;
+}
+
+@media (min-width: 640px) {
+  .search__input {
+    grid-row: 1 / -1;
+    width: 313px;
+    margin-bottom: 0;
+  }
 }
 
 .search__input:focus-visible {
