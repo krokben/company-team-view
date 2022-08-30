@@ -19,7 +19,7 @@ type ApiMember = {
   };
   phone: string;
   email: string;
-  picture: { thumbnail: string };
+  picture: { large: string };
   location: { city: string };
 };
 
@@ -48,7 +48,7 @@ const App = ({ url }: { url: string }) => {
             lastName: name.last,
             phone,
             email,
-            picture: picture.thumbnail,
+            picture: picture.large,
             city: location.city,
           }))
         );
