@@ -1,8 +1,10 @@
 import React from "react";
 import classnames from "classnames";
-import Member from "../Member";
+import LoadingSpinner from "../LoadingSpinner";
 import { Member as MemberType } from "../../App";
 import "./members.css";
+
+const LazyMember = React.lazy(() => import("../Member"));
 
 const Members = ({
   members,
@@ -11,15 +13,17 @@ const Members = ({
   members: MemberType[];
   isGrid: boolean;
 }) => (
-  <ul
-    className={classnames("members", {
-      "members--grid": isGrid,
-    })}
-  >
-    {members.map((member) => (
-      <Member key={member.id} member={member} isGrid={isGrid} />
-    ))}
-  </ul>
+  <React.Suspense fallback={<LoadingSpinner />}>
+    <ul
+      className={classnames("members", {
+        "members--grid": isGrid,
+      })}
+    >
+      {members.map((member) => (
+        <LazyMember key={member.id} member={member} isGrid={isGrid} />
+      ))}
+    </ul>
+  </React.Suspense>
 );
 
 export default Members;

@@ -1,5 +1,7 @@
 import React from "react";
+import LoadingSpinner from "../LoadingSpinner";
 import { Member as MemberType } from "../../App";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import "./member.css";
 
 const getMaxCharName = (name: string) =>
@@ -13,10 +15,11 @@ const Member = ({
   isGrid: boolean;
 }) => (
   <li className="member" tabIndex={1}>
-    <img
+    <LazyLoadImage
       className="member__picture"
       src={member.picture}
       alt={`Photo of ${member.firstName} ${member.lastName}`}
+      placeholder={<LoadingSpinner />}
     />
     <h2 className="member__name">
       {isGrid
