@@ -139,7 +139,7 @@ const App = ({ url }: { url: string }) => {
         </div>
         <button
           className="grid-toggle"
-          name="grid-toggle"
+          data-testid="grid-toggle"
           onClick={() => setIsGrid(!isGrid)}
         />
       </nav>

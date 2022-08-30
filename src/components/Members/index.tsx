@@ -18,6 +18,7 @@ const Members = ({
       className={classnames("members", {
         "members--grid": isGrid,
       })}
+      data-testid={isGrid && "members-grid"}
     >
       {members.map((member) => (
         <LazyMember key={member.id} member={member} isGrid={isGrid} />

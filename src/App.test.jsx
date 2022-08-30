@@ -4,11 +4,12 @@ import { render, screen } from "@testing-library/react";
 import App from "./App";
 import "isomorphic-fetch";
 
-describe("Main container test", () => {
-  test("should be defined", async () => {
+describe("Grid toggle test", () => {
+  test("should toggle grid on button click", async () => {
     render(<App url="" />);
 
-    const button = await screen.findByRole("main");
-    expect(button).toBeDefined(true);
+    const button = await screen.findByTestId("grid-toggle");
+    button.click();
+    expect(await screen.findByTestId("members-grid")).toBeDefined(true); // not working
   });
 });
