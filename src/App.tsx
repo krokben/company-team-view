@@ -35,6 +35,7 @@ const App = ({ url }: { url: string }) => {
   const [members, setMembers] = useState<Member[]>([]);
   const [isGrid, setIsGrid] = useState<boolean>(false);
   const [sortDescending, setSortDescending] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
     setStatus(Status.Fetching);
@@ -73,15 +74,29 @@ const App = ({ url }: { url: string }) => {
           className="sort-toggle"
           onClick={() => setSortDescending(!sortDescending)}
         />
+        <div className="search">
+          <i className="search__icon" />
+          <input
+            className="search__input"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
         <button className="grid-toggle" onClick={() => setIsGrid(!isGrid)} />
       </nav>
       {status === Status.Success ? (
         <Members
-          members={members.sort((a: Member, b: Member) =>
-            sortDescending
-              ? b.lastName.localeCompare(a.lastName)
-              : a.lastName.localeCompare(b.lastName)
-          )}
+          members={members
+            .filter(
+              ({ firstName, lastName }) =>
+                firstName.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
+                lastName.toLowerCase().startsWith(searchQuery.toLowerCase())
+            )
+            .sort((a: Member, b: Member) =>
+              sortDescending
+                ? b.lastName.localeCompare(a.lastName)
+                : a.lastName.localeCompare(b.lastName)
+            )}
           isGrid={isGrid}
         />
       ) : (

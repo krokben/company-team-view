@@ -9,6 +9,11 @@
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+.member:focus-visible {
+  outline-color: #000;
+  outline-style: dotted;
+}
+
 .members--grid .member {
   grid-template-rows: repeat(3, min-content);
   grid-template-columns: 1fr;

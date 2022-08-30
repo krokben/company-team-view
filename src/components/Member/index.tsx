@@ -12,7 +12,7 @@ const Member = ({
   member: MemberType;
   isGrid: boolean;
 }) => (
-  <li className="member">
+  <li className="member" tabIndex={1}>
     <img
       className="member__picture"
       src={member.picture}
