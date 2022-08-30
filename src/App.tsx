@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import "intersection-observer";
 import Members from "./components/Members";
 import LoadingSpinner from "./components/LoadingSpinner";
 
@@ -31,6 +32,36 @@ enum Status {
   Error,
 }
 
+const MembersComponent = ({
+  status,
+  members,
+}: {
+  status: Status;
+  members: React.ReactElement;
+}) => {
+  switch (status) {
+    case Status.Fetching:
+      return (
+        <ul>
+          <li>
+            <LoadingSpinner />
+          </li>
+        </ul>
+      );
+    case Status.Success:
+      return members;
+    case Status.Error:
+      return (
+        <ul>
+          <li>Something went wrong :(</li>
+        </ul>
+      );
+    case Status.Idle:
+    default:
+      return <></>;
+  }
+};
+
 const App = ({ url }: { url: string }) => {
   const [status, setStatus] = useState<Status>(Status.Idle);
   const [members, setMembers] = useState<Member[]>([]);
@@ -43,7 +74,12 @@ const App = ({ url }: { url: string }) => {
     setStatus(Status.Fetching);
 
     fetch(url)
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status !== 200) {
+          throw new Error("Not Found");
+        }
+        return response.json();
+      })
       .then(({ results }: { results: ApiMember[] }) => {
         setMembers(
           results
@@ -83,6 +119,8 @@ const App = ({ url }: { url: string }) => {
     return node;
   }, []);
 
+  console.log(status);
+
   return (
     <main>
       <h1>Meet the Team</h1>
@@ -99,31 +137,34 @@ const App = ({ url }: { url: string }) => {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        <button className="grid-toggle" onClick={() => setIsGrid(!isGrid)} />
-      </nav>
-      {status === Status.Success ? (
-        <Members
-          members={members
-            .filter(
-              ({ firstName, lastName }) =>
-                firstName.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
-                lastName.toLowerCase().startsWith(searchQuery.toLowerCase())
-            )
-            .sort((a: Member, b: Member) =>
-              sortDescending
-                ? b.lastName.localeCompare(a.lastName)
-                : a.lastName.localeCompare(b.lastName)
-            )
-            .slice(0, maxMembers)}
-          isGrid={isGrid}
+        <button
+          className="grid-toggle"
+          name="grid-toggle"
+          onClick={() => setIsGrid(!isGrid)}
         />
-      ) : (
-        <ul>
-          <li>
-            <LoadingSpinner />
-          </li>
-        </ul>
-      )}
+      </nav>
+      <MembersComponent
+        status={status}
+        members={
+          <Members
+            members={members
+              .filter(
+                ({ firstName, lastName }) =>
+                  firstName
+                    .toLowerCase()
+                    .startsWith(searchQuery.toLowerCase()) ||
+                  lastName.toLowerCase().startsWith(searchQuery.toLowerCase())
+              )
+              .sort((a: Member, b: Member) =>
+                sortDescending
+                  ? b.lastName.localeCompare(a.lastName)
+                  : a.lastName.localeCompare(b.lastName)
+              )
+              .slice(0, maxMembers)}
+            isGrid={isGrid}
+          />
+        }
+      />
       <div ref={loadingRef} />
     </main>
   );
