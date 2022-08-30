@@ -8,7 +8,7 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
   ],
-  overrides: [{ excludedFiles: "*.js" }],
+  overrides: [{ files: ["*ts", "*tsx"], excludedFiles: "*.js" }],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: "latest",

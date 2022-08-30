@@ -33,6 +33,7 @@ const Member = ({
           className="member__icon member__icon--email"
           href={`mailto:${member.email}`}
           target="_blank"
+          rel="noopener noreferrer"
         />
         <a
           className="member__icon member__icon--phone"
