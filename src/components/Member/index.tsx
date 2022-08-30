@@ -29,8 +29,15 @@ const Member = ({
     <div className="member__profile">
       <p className="member__city">{member.city}</p>
       <div className="member__contact">
-        <i className="member__icon member__icon--email" />
-        <i className="member__icon member__icon--phone" />
+        <a
+          className="member__icon member__icon--email"
+          href={`mailto:${member.email}`}
+          target="_blank"
+        />
+        <a
+          className="member__icon member__icon--phone"
+          href={`tel:${member.phone}`}
+        />
       </div>
     </div>
   </li>
